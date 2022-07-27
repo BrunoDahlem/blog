@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}
+    {% if view.kwargs.category %}
+        {{view.kwargs.category | title}} |
+    {% endif %}
+    {% if request.GET.term %}
+        {{request.GET.term | title}} | Pesquisa |
+    {% endif %}
+{% endblock title %}
+
+
+
+{% block main %}
+    <div class="card-columns mt-4">
+        {% for post in posts %}
+            <div class="card">
+                {% if post.post_img %}
+                    <a href="{% url 'posts-detail' post.id %}">
+                        <img class="card-img-top"
+                            src="{{ post.post_img.url }}"
+                            alt="{{ post.post_title }}">
+                    </a>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'posts-detail' post.id %}">
+                            {{ post.post_title }}
+                        </a>
+                    </h5>
+                    <p class="card-text">{{ post.post_excerpt }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            {{post.post_data | naturalday | title}} 
+                            | {{post.number_comments}} 
+                            {% if post.number_comments > 1 %} 
+                                comentários
+                            {% else %}
+                                comentário
+                            {% endif %}
+                            | {{ post.post_category }}
+                        </small>
+                    </p>
+                    <div class="text-right">
+                        <a href="{% url 'posts-detail' post.id %}" class="btn btn-outline-secondary">Ler mais...</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'partials/_pagination.html' %}
+{% endblock main %}

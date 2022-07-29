@@ -5,6 +5,14 @@
     {{post.post_title | title}} |
 {% endblock title %}
 
+{% block menu %}
+    {% for category in categories %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'posts-categories' category.name_category %}">{{category.name_category}}</a>
+    </li>
+    {% endfor %}
+{% endblock menu %}
+
 {% block main %}
     <!-- POST -->
     <div class="container">
@@ -12,7 +20,7 @@
             <div class="col-xl"></div>
             <div class="col-xl-8 text-center">
                 <h2>{{post.post_title}}</h2>
-                <h5>{{post.post_excerpt}}</h5>
+                <h5>{{post.post_excerpt | safe}}</h5>
                 <p class="text-muted mt-4">
                     <small>
                         {{ post.post_autor }} |

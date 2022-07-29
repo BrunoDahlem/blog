@@ -3,6 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
 
 from .models import Post
+from categories.models import Category
 from django.db.models import Q, Count, Case, When
 from comments.forms import FormComment
 from comments.models import Comments
@@ -15,6 +16,12 @@ class PostIndex(ListView):
     template_name = 'posts/index.html'
     paginate_by = 6
     context_object_name = 'posts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Seleciona os objetos da classe categoria para utilizar nos templates
+        context['categories'] = Category.objects.values()
+        return context
 
 # Sobrescrevendo a function de ordenar a listView
     def get_queryset(self):
@@ -75,7 +82,7 @@ class PostDetail(UpdateView):
         post = self.get_object()
         comments = Comments.objects.filter(
             comment_published=True, comment_post=post.id)
-
+        context['categories'] = Category.objects.values()
         context['comments'] = comments
 
         return context
@@ -92,5 +99,5 @@ class PostDetail(UpdateView):
 
         comment.save()
         messages.success(
-            self.request, 'Comentário enviado com sucesso! Aguarde revisāo!')
+            self.request, 'Comentário enviado com sucesso!')
         return redirect('posts-detail', pk=post.id)

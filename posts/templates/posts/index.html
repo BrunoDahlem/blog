@@ -10,6 +10,13 @@
     {% endif %}
 {% endblock title %}
 
+{% block menu %}
+    {% for category in categories %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'posts-categories' category.name_category %}">{{category.name_category}}</a>
+    </li>
+    {% endfor %}
+{% endblock menu %}
 
 
 {% block main %}
@@ -29,7 +36,7 @@
                             {{ post.post_title }}
                         </a>
                     </h5>
-                    <p class="card-text">{{ post.post_excerpt }}</p>
+                    <p class="card-text">{{ post.post_excerpt | safe | truncatechars_html:300}}</p>
                     <p class="card-text">
                         <small class="text-muted">
                             {{post.post_data | naturalday | title}} 

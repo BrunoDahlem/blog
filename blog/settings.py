@@ -84,8 +84,8 @@ DATABASES = {
         'NAME': 'bd_blog',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'cursopython',
-        'PASSWORD': 'curs0pyth0n@169'
+        'USER': 'root',
+        'PASSWORD': ''
     }
 }
 
